@@ -1,3 +1,4 @@
+import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import Pomodoro from "./App"; // Importando o componente padrão do App.tsx
