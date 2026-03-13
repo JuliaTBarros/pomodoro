@@ -1,12 +1,12 @@
-import {useState, useEffect} from "react";
-import type {PomodoroMode} from "../domain/Pomodoro.ts";
-import * as timers from "node:timers";
+import { useState, useEffect } from "react";
+import type { PomodoroMode } from "../domain/Pomodoro";
 
 export function usePomodoro() {
     const [mode, setMode] = useState<PomodoroMode>('focus');
-    // Trabalhamos sempre em segundos para facilitar os cálculos matemáticos
     const [timeLeft, setTimeLeft] = useState(25 * 60);
     const [isRunning, setIsRunning] = useState(false);
+
+    const [cycles, setCycles] = useState(0);
 
     const toggleTimer = () => setIsRunning(!isRunning);
 
@@ -14,6 +14,7 @@ export function usePomodoro() {
         setIsRunning(false);
         setTimeLeft(25 * 60);
         setMode('focus');
+        setCycles(0);
     };
 
     useEffect(() => {
@@ -25,14 +26,30 @@ export function usePomodoro() {
             }, 1000);
 
         } else if (timeLeft === 0) {
-            setIsRunning(false);
+
+            if (mode === 'focus') {
+                const newCycles = cycles + 1;
+                setCycles(newCycles);
+
+                if (newCycles % 4 === 0) {
+                    setMode('longBreak');
+                    setTimeLeft(15 * 60);
+                } else {
+                    setMode('shortBreak');
+                    setTimeLeft(5 * 60);
+                }
+            } else {
+                setMode('focus');
+                setTimeLeft(25 * 60);
+            }
+
+            setIsRunning(true);
         }
 
         return () => {
             clearInterval(intervalId);
         };
-    }, [isRunning, timeLeft]);
+    }, [isRunning, timeLeft, mode, cycles]);
 
-    return {mode, timeLeft, isRunning, toggleTimer, resetTimer};
-    ;
+    return { mode, timeLeft, isRunning, toggleTimer, resetTimer, cycles };
 }

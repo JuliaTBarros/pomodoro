@@ -11,7 +11,7 @@ export function Timer() {
 
     return (
         <div className="flex flex-col items-center justify-center h-full">
-            <h2 className="text-xl font-semibold mb-8 text-slate-400 uppercase tracking-widest">
+            <h2 className="text-xl font-semibold mb-8 text-muted-foreground uppercase tracking-widest">
                 {mode === 'focus' ? 'Foco' : 'Pausa'}
             </h2>
 
@@ -23,7 +23,11 @@ export function Timer() {
                 <Button size="lg" onClick={toggleTimer} variant={isRunning ? "secondary" : "default"}>
                     {isRunning ? "Pausar" : "Iniciar"}
                 </Button>
-                <Button size="lg" onClick={resetTimer} variant="outline">
+                <Button
+                    size="lg"
+                    onClick={resetTimer}
+                    variant="outline"
+                >
                     Resetar
                 </Button>
             </div>
