@@ -20,18 +20,17 @@ export function useTasks() {
     };
 
     // Função para concluir a tarefa atual
-    const completeCurrentTask = () =>
+    const completeCurrentTask = () => {
         setTasks((prevTasks) => {
             if (prevTasks.length === 0) return prevTasks;
-
             return prevTasks.slice(1);
-        })
-};
+        });
+    };
 
-return {
-    tasks,
-    currentTask,
-    addTask,
-    completeCurrentTask,
-};
+    return {
+        tasks,
+        currentTask,
+        addTask,
+        completeCurrentTask,
+    };
 }
