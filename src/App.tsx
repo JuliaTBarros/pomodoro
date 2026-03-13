@@ -1,77 +1,22 @@
-import { useState } from "react";
+// O App.tsx na Clean Architecture atua apenas como um "Layout" ou "Compositor".
+// Mais tarde, importaremos o Timer e a TodoList do diretório 'presentation/features'.
 
-type Task = {
-  completed: boolean;
-  id: string;
-  title: string;
-};
+export default function App() {
+    return (
+        <div className="bg-slate-900 min-h-screen w-screen text-white flex p-8 gap-8">
+            {/* Lado Esquerdo: Pomodoro Timer (Ocupará 2/3) */}
+            <main className="flex-2 bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-lg">
+                <h1 className="text-2xl font-bold mb-4">Timer em breve...</h1>
+            </main>
 
-function Tasks() {
-  const [input, setInput] = useState("");
-  const [tasks, setTasks] = useState<Task[]>([]);
-
-  function onSaveTask() {
-    setTasks([
-      ...tasks,
-      { completed: false, id: crypto.randomUUID(), title: input },
-    ]);
-
-    setInput("");
-  }
-
-  function completeTask({ id }: Task) {
-    setTasks(
-        tasks.map((task) => {
-          if (task.id === id) {
-            return {
-              ...task,
-              completed: !task.completed,
-            };
-          }
-
-          return task;
-        }),
-    );
-  }
-
-  return (
-      <>
-        <div>
-          <input
-              className="p-2 border"
-              type="text"
-              value={input}
-              onChange={(event) => setInput(event.target.value)}
-          />
-
-          <button className="rounded p-2 bg-black" onClick={onSaveTask}>
-            Save
-          </button>
+            {/* Lado Direito: Todo List (Ocupará 1/3) */}
+            <aside className="flex-1 bg-slate-800 rounded-xl border border-slate-700 p-6 shadow-lg flex flex-col">
+                <h2 className="text-xl font-bold mb-4">Fila de Tarefas</h2>
+                <div className="flex-1 overflow-y-auto">
+                    {/* A lista de tarefas entrará aqui */}
+                    <p className="text-slate-400">Nenhuma tarefa no momento.</p>
+                </div>
+            </aside>
         </div>
-
-        <ul>
-          {tasks.map((task) => {
-            return (
-                <li
-                    className={task.completed ? "line-through" : ""}
-                    key={task.id}
-                    onClick={() => completeTask(task)}
-                >
-                  {task.title} {String(task.completed)}
-                </li>
-            );
-          })}
-        </ul>
-      </>
-  );
-}
-
-export default function Pomodoro() {
-  return (
-      <div className="bg-slate-900 h-screen w-screen text-white">
-        <h1>Tasks</h1>
-
-        <Tasks />
-      </div>
-  );
+    );
 }
